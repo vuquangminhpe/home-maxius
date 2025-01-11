@@ -1,101 +1,154 @@
-import Image from "next/image";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import Navbar from "./NavBar/navbar";
+import { Page1 } from "./AllPages/Page1";
+import { Page2 } from "./AllPages/Page2";
+import { Page3 } from "./AllPages/Page3";
+import { Page4 } from "./AllPages/Page4";
+import { Page5 } from "./AllPages/Page5";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+interface PageData {
+  id: string;
+  component: React.ReactNode;
+  hash: string;
 }
+
+const ScrollPages = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const pagesRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const pages: PageData[] = [
+    {
+      id: "product",
+      component: <Page1 isVisible={currentPage === 0} />,
+      hash: "firstPage",
+    },
+    {
+      id: "technology",
+      component: <Page2 isVisible={currentPage === 1} />,
+      hash: "secondPage",
+    },
+    {
+      id: "application",
+      component: <Page3 isVisible={currentPage === 2} />,
+      hash: "thirdPage",
+    },
+    {
+      id: "blockchain",
+      component: <Page4 isVisible={currentPage === 3} />,
+      hash: "fourthPage",
+    },
+    {
+      id: "end",
+      component: <Page5 isVisible={currentPage === 4} />,
+      hash: "fifthPage",
+    },
+  ];
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      const pageIndex = pages.findIndex((page) => page.hash === hash);
+      if (pageIndex !== -1) {
+        pagesRef.current[pageIndex]?.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    if (!window.location.hash) {
+      window.location.hash = pages[0].hash;
+    } else {
+      handleHashChange();
+    }
+
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    const observers = pages.map((_, index) => {
+      return new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setCurrentPage(index);
+              const newHash = `#${pages[index].hash}`;
+              if (window.location.hash !== newHash) {
+                window.history.replaceState(null, "", newHash);
+              }
+            }
+          });
+        },
+        {
+          threshold: 0.5,
+          rootMargin: "0px",
+        }
+      );
+    });
+
+    pagesRef.current.forEach((ref, index) => {
+      if (ref) {
+        observers[index].observe(ref);
+      }
+    });
+
+    return () => {
+      observers.forEach((observer, index) => {
+        if (pagesRef.current[index]) {
+          observer.disconnect();
+        }
+      });
+    };
+  }, []);
+
+  return (
+    <>
+      <div className="fixed inset-0 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="h-full overflow-y-auto snap-y snap-mandatory">
+            {pages.map((page, index) => (
+              <div
+                key={page.id}
+                ref={(el) => {
+                  pagesRef.current[index] = el;
+                }}
+                className="h-screen w-full snap-start flex items-center justify-center"
+                style={{
+                  backgroundColor: index === currentPage ? "" : "",
+                  transition: "background-color 0.3s ease",
+                }}
+              >
+                {page.component}
+              </div>
+            ))}
+          </div>
+
+          <div className="fixed right-8 top-1/2 -translate-y-1/2 z-[80] flex flex-col gap-2">
+            {pages.map((_, index) => (
+              <div
+                key={index}
+                className="group cursor-pointer"
+                onClick={() => {
+                  window.location.hash = pages[index].hash;
+                }}
+              >
+                {index === currentPage ? (
+                  <div className="w-8 h-2 right-0 bg-orange-500" />
+                ) : (
+                  <div
+                    className={` w-4 h-2 border ${
+                      [1, 2, 4].includes(currentPage) ? "bg-white" : "bg-black"
+                    } group-hover:border-orange-500 transition-all`}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <Navbar page={currentPage} />
+    </>
+  );
+};
+
+export default ScrollPages;
