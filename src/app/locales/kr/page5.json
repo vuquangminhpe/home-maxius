@@ -1,0 +1,14 @@
+{
+  "company": {
+    "title": "Company.",
+    "email": "support@maxius.io"
+  },
+  "warranty": {
+    "title": "Warranty.",
+    "link": "자세히 보기 >"
+  },
+  "technicalSupport": {
+    "title": "Technical support.",
+    "email": "support@maxius.io"
+  }
+}

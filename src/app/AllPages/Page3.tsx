@@ -1,10 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AnimatePresence, motion } from "framer-motion";
-import { ContentItem } from "../types/page3.type";
-
-interface Section {
-  title: string;
-  content: ContentItem[];
-}
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import useStore from "@/globalState/store";
 
 const containerVariants = {
   hidden: {},
@@ -71,61 +69,43 @@ const sectionVariants = {
 };
 
 export const Page3 = ({ isVisible }: { isVisible: boolean }) => {
-  const sections: Section[] = [
+  const { t, i18n } = useTranslation("page3");
+  const { i18nextLng } = useStore();
+
+  useEffect(() => {
+    if (i18n.language !== i18nextLng) {
+      i18n.changeLanguage(i18nextLng);
+    }
+  }, [i18nextLng, i18n]);
+
+  if (!i18n.isInitialized) {
+    return <div>Loading...</div>;
+  }
+
+  const sections = [
     {
-      title: "Product",
-      content: [
-        {
-          text: "High-Performance Server",
-          highlight: true,
-          suffix: " with an extensive selection of serviceable capabilities",
-        },
-        {
-          text: "Building IDC",
-          highlight: true,
-          suffix: ", incorporating the latest",
-          linkedText: " Storage",
-          highlight2: true,
-          suffix2: " technology applicable to various I/O devices",
-        },
-        {
-          text: "Various",
-          linkedText: " Blockchain Solutions",
-          highlight: true,
-          suffix: ", including IPFS.",
-        },
-        {
-          text: "",
-          plain: true,
-        },
-      ],
+      key: "product",
+      title: t("sections.product.title"),
+      content: t("sections.product.content", { returnObjects: true }) as any[],
     },
     {
-      title: "Technology",
-      content: [
-        {
-          text: "Based on more than 20 years of research know-how and technology, we are the only company in Korea that makes HPC servers",
-          linkedText: " using self-developed system",
-          highlight: true,
-          suffix: " semiconductors and",
-          linkedText2: " provides solutions specialized",
-          highlight2: true,
-          suffix2: " in the intelligent data center in the IT industry.",
-        },
-      ],
+      key: "technology",
+      title: t("sections.technology.title"),
+      content: t("sections.technology.content", {
+        returnObjects: true,
+      }) as any[],
     },
     {
-      title: "Application",
-      content: [
-        {
-          text: "With our services, Maxius strives to supply differentiated products and solutions.",
-          plain: true,
-        },
-      ],
+      key: "application",
+      title: t("sections.application.title"),
+      content: t("sections.application.content", {
+        returnObjects: true,
+      }) as any[],
     },
     {
-      title: "Blockchain",
-      content: [],
+      key: "blockchain",
+      title: t("sections.blockchain.title"),
+      content: [] as any[],
     },
   ];
 
@@ -134,13 +114,13 @@ export const Page3 = ({ isVisible }: { isVisible: boolean }) => {
       {isVisible && (
         <motion.div
           key="page3"
-          className="min-h-screen h-full bg-[#0a1228] w-full text-white relative overflow-hidden"
+          className="min-h-screen  h-full bg-[#0a1228] w-full text-white relative overflow-hidden"
         >
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col md:flex-row mx-4 md:mx-36 h-full relative"
+            className="flex  flex-col md:flex-row mx-4 md:mx-36 h-full relative"
           >
             {sections.map((section, index) => (
               <motion.div
@@ -151,23 +131,23 @@ export const Page3 = ({ isVisible }: { isVisible: boolean }) => {
                 initial="initial"
                 animate="animate"
                 whileHover="hover"
-                className="relative min-h-[200px] md:min-h-[300px] w-full md:w-auto"
+                className="relative  min-h-[200px] md:min-h-[300px] w-full md:w-auto"
               >
                 <div className="relative z-10 p-8 h-full">
                   {index < sections.length - 1 && (
-                    <div className="hidden md:block absolute right-0 top-8 bottom-8">
+                    <div className="hidden  md:block absolute right-0 top-8 bottom-8">
                       <motion.div
                         initial={{ scaleY: 1, backgroundColor: "#374151" }}
                         whileHover={{ scaleY: 0.9, backgroundColor: "#6B7280" }}
                         transition={{ duration: 0.3 }}
-                        className="w-[1px] h-full origin-top"
+                        className="w-[1px]  h-full origin-top"
                       />
                     </div>
                   )}
 
                   <h3
-                    className={`md:text-[20px] text-start lg:text-[30px] font-bold mb-8 mt-[120px] max-sm:mt-[40px] mx-auto transition-colors duration-300
-                                ${index === 3 ? "text-orange-500" : ""}`}
+                    className={`md:text-[20px] text-start lg:text-[30px] font-bold mb-8 mt-[270px] max-sm:mt-[90px] mx-auto transition-colors duration-300
+                      ${section.key === "blockchain" ? "text-orange-500" : ""}`}
                   >
                     {section.title}
                   </h3>
@@ -178,10 +158,10 @@ export const Page3 = ({ isVisible }: { isVisible: boolean }) => {
                     transition={{ duration: 0.3 }}
                     className="space-y-4"
                   >
-                    {section.content.map((item, i) => (
+                    {section.content?.map((item: any, i: number) => (
                       <p
                         key={i}
-                        className={`text-sm leading-relaxed tracking-wide max-sm:text-xs max-md:text-sm`}
+                        className="text-sm leading-relaxed tracking-wide max-sm:text-xs max-md:text-sm"
                       >
                         {item.plain ? (
                           <span className="text-gray-400">{item.text}</span>
@@ -232,3 +212,5 @@ export const Page3 = ({ isVisible }: { isVisible: boolean }) => {
     </AnimatePresence>
   );
 };
+
+export default Page3;

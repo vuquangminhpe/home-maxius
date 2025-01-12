@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "product": {
+      "title": "Product",
+      "content": [
+        {
+          "text": "High-Performance Server",
+          "highlight": true,
+          "suffix": " with an extensive selection of serviceable capabilities"
+        },
+        {
+          "text": "Building IDC",
+          "highlight": true,
+          "suffix": ", incorporating the latest",
+          "linkedText": " Storage",
+          "highlight2": true,
+          "suffix2": " technology applicable to various I/O devices"
+        },
+        {
+          "text": "Various",
+          "linkedText": " Blockchain Solutions",
+          "highlight": true,
+          "suffix": ", including IPFS."
+        }
+      ]
+    },
+    "technology": {
+      "title": "Technology",
+      "content": [
+        {
+          "text": "Based on more than 20 years of research know-how and technology, we are the only company in Korea that makes HPC servers",
+          "linkedText": " using self-developed system",
+          "highlight": true,
+          "suffix": " semiconductors and",
+          "linkedText2": " provides solutions specialized",
+          "highlight2": true,
+          "suffix2": " in the intelligent data center in the IT industry."
+        }
+      ]
+    },
+    "application": {
+      "title": "Application",
+      "content": [
+        {
+          "text": "With our services, Maxius strives to supply differentiated products and solutions.",
+          "plain": true
+        }
+      ]
+    },
+    "blockchain": {
+      "title": "Blockchain"
+    }
+  }
+}

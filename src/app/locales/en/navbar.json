@@ -1,0 +1,18 @@
+{
+  "brand": "MAXIUS",
+  "menu": {
+    "home": "Home",
+    "brochure": "Brochure",
+    "proposal": "Proposal",
+    "contact": "Contact"
+  },
+  "address": "5F 12-30, Simin-daero 327beon-gil, Dongan-gu, Anyang-si, Gyeonggi-do, Republic of Korea",
+  "contact": {
+    "tel": "Tel 02. 851. 2662",
+    "fax": "Fax 02. 851. 2655",
+    "viewMap": "View Map",
+    "company": "Company",
+    "technicalSupport": "Technical support",
+    "email": "support@maxius.io"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "title": "STORY",
+  "categories": {
+    "history": {
+      "title": "History",
+      "items": [
+        {
+          "year": "2021",
+          "events": [
+            "Rebrand the Company name to Maxius",
+            "1st Pan Governmental Information Resource Integration HW3"
+          ]
+        },
+        {
+          "year": "2020",
+          "events": [
+            "2nd construction of AI-based adaptive security system",
+            "SPC Certification : TOP 5 Rank record in the world of storage"
+          ]
+        },
+        {
+          "year": "2019",
+          "events": ["Development of Genome Analysis System"]
+        }
+      ]
+    },
+    "partners": {
+      "title": "Partners",
+      "items": [
+        "Cheongwadee",
+        "KHNP",
+        "Ministry of National Defense",
+        "Gunpo city",
+        "Korea Agro-Fisheries&Food Trade Corporation",
+        "JeciliaNamdo",
+        "KMf8",
+        "JDG",
+        "Korea Housing Finance Corporation",
+        "Gyeonggi Provincial Police Agency",
+        "NCIS",
+        "KPIC",
+        "Supreme Court of Korea",
+        "IPET",
+        "LH",
+        "National Guguk Center",
+        "Korea Workers Compensation&Welfare Service"
+      ]
+    },
+    "patents": {
+      "title": "Patents",
+      "items": [
+        "High-speed data I/O semiconductor Chip",
+        "Intelligent Pattern Analysis Algorithm",
+        "OS and SSD optimization"
+      ]
+    },
+    "awards": {
+      "title": "Awards",
+      "items": [
+        "Awarded the Sejong Award at the KR Patent Awards",
+        "Certified by Korea Excellent Product Designation",
+        "Korean Green Technology"
+      ]
+    }
+  }
+}

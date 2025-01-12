@@ -9,6 +9,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import useStore from "@/globalState/store";
 
 const fadeInVariants = {
   hidden: { opacity: 0, x: -50 },
@@ -35,6 +37,14 @@ const customScrollbar = `
 export const Page4 = ({ isVisible }: { isVisible: boolean }) => {
   const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
+  const { t, i18n } = useTranslation("page4");
+  const { i18nextLng } = useStore();
+
+  useEffect(() => {
+    if (i18n.language !== i18nextLng) {
+      i18n.changeLanguage(i18nextLng);
+    }
+  }, [i18nextLng, i18n]);
 
   useEffect(() => {
     if (!api) {
@@ -46,54 +56,11 @@ export const Page4 = ({ isVisible }: { isVisible: boolean }) => {
     });
   }, [api]);
 
-  const storyData = {
-    History: [
-      {
-        year: "2021",
-        events: [
-          "Rebrand the Company name to Maxius",
-          "1st Pan Governmental Information Resource Integration HW3",
-        ],
-      },
-      {
-        year: "2020",
-        events: [
-          "2nd construction of AI-based adaptive security system",
-          "SPC Certification : TOP 5 Rank record in the world of storage",
-        ],
-      },
-      { year: "2019", events: ["Development of Genome Analysis System"] },
-    ],
-    Partners: [
-      "Cheongwadee",
-      "KHNP",
-      "Ministry of National Defense",
-      "Gunpo city",
-      "Korea Agro-Fisheries&Food Trade Corporation",
-      "JeciliaNamdo",
-      "KMf8",
-      "JDG",
-      "Korea Housing Finance Corporation",
-      "Gyeonggi Provincial Police Agency",
-      "NCIS",
-      "KPIC",
-      "Supreme Court of Korea",
-      "IPET",
-      "LH",
-      "National Guguk Center",
-      "Korea Workers Compensation&Welfare Service",
-    ],
-    Patents: [
-      "High-speed data I/O semiconductor Chip",
-      "Intelligent Pattern Analysis Algorithm",
-      "OS and SSD optimization",
-    ],
-    Awards: [
-      "Awarded the Sejong Award at the KR Patent Awards",
-      "Certified by Korea Excellent Product Designation",
-      "Korean Green Technology",
-    ],
-  };
+  if (!i18n.isInitialized) {
+    return <div>Loading...</div>;
+  }
+
+  const categories = t("categories", { returnObjects: true });
 
   return (
     <AnimatePresence mode="wait">
@@ -103,30 +70,32 @@ export const Page4 = ({ isVisible }: { isVisible: boolean }) => {
           initial="hidden"
           animate="visible"
           exit="hidden"
-          className="min-h-screen mt-56 max-lg:mx-48 mx-32 max-md:mx-24 max-sm:mx-1 bg-white p-4 md:p-8 relative"
+          className="min-h-screen max-md:mt-[500px] max-lg:mt-[340px] mt-[300px] max-lg:mx-48 mx-32 max-md:mx-24 max-sm:mx-1 bg-white p-4 md:p-8 relative"
         >
           <style>{customScrollbar}</style>
           <motion.h1
             variants={fadeInVariants}
-            className="text-4xl mb-8 text-center font-bold"
+            className="text-[99px] max-lg:text[30px] max-sm:text-[25px] mb-8 text-center font-bold"
           >
-            STORY
+            {t("title")}
           </motion.h1>
 
-          <div className="hidden   lg:grid grid-cols-4 gap-6 overflow-y-auto max-h-[calc(100vh-200px)] custom-scrollbar">
-            {Object.entries(storyData).map(([category, items], index) => (
-              <motion.div
-                key={category}
-                variants={fadeInVariants}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                className="p-6 border rounded-lg shadow-md bg-gray-50"
-              >
-                <h2 className="text-xl mb-4 font-semibold text-gray-800">
-                  {category}
-                </h2>
-                <div className="space-y-3 overflow-y-auto max-h-[300px] custom-scrollbar">
-                  {Array.isArray(items)
-                    ? items.map((item, i) => (
+          <div className="hidden lg:grid grid-cols-4 gap-6 overflow-y-auto max-h-[calc(100vh-200px)] custom-scrollbar">
+            {Object.entries(categories).map(
+              ([key, category]: [string, any], index) => (
+                <motion.div
+                  key={key}
+                  variants={fadeInVariants}
+                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  className="p-6 border rounded-lg shadow-md bg-gray-50"
+                >
+                  <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-4 font-semibold text-gray-800">
+                    {" "}
+                    {category.title}
+                  </h2>
+                  <div className="space-y-3 overflow-y-auto max-h-[300px] custom-scrollbar">
+                    {Array.isArray(category.items) &&
+                      category.items.map((item: any, i: number) => (
                         <div key={i} className="text-sm text-gray-700">
                           {typeof item === "string" ? (
                             <p>{item}</p>
@@ -136,18 +105,18 @@ export const Page4 = ({ isVisible }: { isVisible: boolean }) => {
                                 {item.year}
                               </div>
                               <ul className="list-disc list-inside pl-4">
-                                {item.events.map((event, j) => (
+                                {item.events.map((event: string, j: number) => (
                                   <li key={j}>{event}</li>
                                 ))}
                               </ul>
                             </div>
                           )}
                         </div>
-                      ))
-                    : null}
-                </div>
-              </motion.div>
-            ))}
+                      ))}
+                  </div>
+                </motion.div>
+              )
+            )}
           </div>
 
           <div className="lg:hidden max-sm:w-[60%] max-md:w-[80%] mx-auto">
@@ -160,18 +129,19 @@ export const Page4 = ({ isVisible }: { isVisible: boolean }) => {
               }}
             >
               <CarouselContent className="-ml-2 md:-ml-4">
-                {Object.entries(storyData).map(([category, items], index) => (
-                  <CarouselItem
-                    key={category}
-                    className="pl-2 md:pl-4 basis-full md:basis-1/2"
-                  >
-                    <div className="h-full p-4 md:p-6">
-                      <h2 className="text-xl mb-4 font-semibold text-gray-800">
-                        {category}
-                      </h2>
-                      <div className="space-y-3 overflow-y-auto max-h-[50vh] md:max-h-[300px] custom-scrollbar">
-                        {Array.isArray(items)
-                          ? items.map((item, i) => (
+                {Object.entries(categories).map(
+                  ([key, category]: [string, any], index) => (
+                    <CarouselItem
+                      key={key}
+                      className="pl-2 md:pl-4 basis-full md:basis-1/2"
+                    >
+                      <div className="h-full p-4 md:p-6">
+                        <h2 className="text-xl mb-4 font-semibold text-gray-800">
+                          {category.title}
+                        </h2>
+                        <div className="space-y-3 overflow-y-auto max-h-[50vh] md:max-h-[300px] custom-scrollbar">
+                          {Array.isArray(category.items) &&
+                            category.items.map((item: any, i: number) => (
                               <div key={i} className="text-sm text-gray-700">
                                 {typeof item === "string" ? (
                                   <p className="break-words">{item}</p>
@@ -181,21 +151,23 @@ export const Page4 = ({ isVisible }: { isVisible: boolean }) => {
                                       {item.year}
                                     </div>
                                     <ul className="list-disc list-inside pl-4">
-                                      {item.events.map((event, j) => (
-                                        <li key={j} className="break-words">
-                                          {event}
-                                        </li>
-                                      ))}
+                                      {item.events.map(
+                                        (event: string, j: number) => (
+                                          <li key={j} className="break-words">
+                                            {event}
+                                          </li>
+                                        )
+                                      )}
                                     </ul>
                                   </div>
                                 )}
                               </div>
-                            ))
-                          : null}
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  </CarouselItem>
-                ))}
+                    </CarouselItem>
+                  )
+                )}
               </CarouselContent>
               <div className="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 hidden">
                 <CarouselPrevious />
@@ -210,3 +182,5 @@ export const Page4 = ({ isVisible }: { isVisible: boolean }) => {
     </AnimatePresence>
   );
 };
+
+export default Page4;

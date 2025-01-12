@@ -1,0 +1,14 @@
+{
+  "company": {
+    "title": "Company.",
+    "email": "support@maxius.io"
+  },
+  "warranty": {
+    "title": "Warranty.",
+    "link": "Learn more >"
+  },
+  "technicalSupport": {
+    "title": "Technical support.",
+    "email": "support@maxius.io"
+  }
+}

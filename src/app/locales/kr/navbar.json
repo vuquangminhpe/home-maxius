@@ -1,0 +1,18 @@
+{
+  "brand": "MAXIUS",
+  "menu": {
+    "home": "홈",
+    "brochure": "브로셔",
+    "proposal": "제안",
+    "contact": "연락처"
+  },
+  "address": "경기도 안양시 동안구 시민대로 327번길 12-30, 5층",
+  "contact": {
+    "tel": "전화 02. 851. 2662",
+    "fax": "팩스 02. 851. 2655",
+    "viewMap": "지도 보기",
+    "company": "회사",
+    "technicalSupport": "기술 지원",
+    "email": "support@maxius.io"
+  }
+}
